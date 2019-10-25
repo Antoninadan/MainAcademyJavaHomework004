@@ -1,26 +1,48 @@
 package com.mainacad;
 
 import com.mainacad.model.UserConnection;
+import com.mainacad.service.FileService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class ApplicationRunner {
     public static final Logger LOGGER = Logger.getLogger(ApplicationRunner.class.getName());
+
     public static void main(String[] args) {
-
-//        String str = "dfhf bvthf dfhfh";
-//        FileService.writeTextToFile(str, "file1.txt");
-//        String readedString = FileService.readTextFromFile("file1.txt");
-//        LOGGER.info(readedString);
-
-        List<UserConnection> userConnections = new ArrayList<>();
-        for (int i = 0; i <=5 ; i++) {
-            userConnections.add(new UserConnection());
-        }
-
-        System.out.println("userConnections.toString() = " + userConnections.toString());
-        
+        List<UserConnection> userConnections = createTestListConnection();
+        FileService.writeListToFile(userConnections, "file1.txt", false);
     }
+
+    public static List<UserConnection> createTestListConnection() {
+        List<UserConnection> userConnections = new ArrayList<>();
+        Date date = new Date();
+        for (int i = 1; i <= 5; i++) {
+            userConnections.add(new UserConnection(getRandomIP(), getRandomSessionId(), date.getTime()));
+        }
+        return userConnections;
+    }
+
+    public static String getRandomIP() {
+        String result = "";
+        int rangeFrom = 100;
+        int rangeTo = 155;
+        for (int i = 1; i <= 4; i++) {
+            result += Integer.toString(rangeFrom + (int) (Math.random() * rangeTo));
+            if (i != 4) {
+                result += ".";
+            }
+        }
+        return result;
+    }
+
+    public static String getRandomSessionId() {
+        int rangeFrom = 10000;
+        int rangeTo = 89999;
+        return Integer.toString(rangeFrom + (int) (Math.random() * rangeTo));
+    }
+
+
 }

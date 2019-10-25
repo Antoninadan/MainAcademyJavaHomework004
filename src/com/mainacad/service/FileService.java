@@ -2,6 +2,8 @@ package com.mainacad.service;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Collection;
+import java.util.List;
 
 public class FileService {
     public static final String MAIN_DIR = System.getProperty("user.dir");
@@ -9,11 +11,17 @@ public class FileService {
     public static final String FILES_DIR = MAIN_DIR + SEP + "files";
 
     // work with text
-    public static void writeTextToFile(String text, String fileName) {
+    public static void writeTextToFile(String text, String fileName, boolean append) {
         checkTargetDir();
-        try (FileWriter fileWriter = new FileWriter(FILES_DIR + SEP + fileName)) {
-            fileWriter.write(text);
-            fileWriter.flush();
+        try (FileWriter fileWriter = new FileWriter(FILES_DIR + SEP + fileName, append)) {
+            if (append) {
+                BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
+                bufferWriter.write(text);
+                bufferWriter.close();
+            } else {
+                fileWriter.write(text);
+                fileWriter.flush();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,10 +74,19 @@ public class FileService {
         writeBytesToFile(bytes, targetFileName);
     }
 
-    public static void moveFile(String sourceFileName, String targetFileName) {
-        byte[] bytes = getBytesFromFile(sourceFileName);
-        writeBytesToFile(bytes, targetFileName);
-    }
+//    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//    public static void moveFile(String sourceFileName, String sourcePath, String targetPath) {
+//        byte[] bytes = getBytesFromFile(sourceFileName);
+//        writeBytesToFile(bytes, targetFileName);
+//    }
 
+    public static <T> void writeListToFile(Collection<T> collection, String fileName, boolean append) {
+        if (!append) {
+            writeTextToFile("", fileName, false);
+        }
+        for (T each : collection) {
+            FileService.writeTextToFile(each.toString() + "\n", fileName, true);
+        }
+    }
 
 }
