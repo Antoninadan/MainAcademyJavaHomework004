@@ -74,23 +74,23 @@ public class FileService {
         writeBytesToFile(bytes, targetPath, targetFileName);
     }
 
-//    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static void moveFile(String sourcePath, String sourceFileName, String targetPath) {
         byte[] bytes = getBytesFromFile(sourcePath, sourceFileName);
-        deleteFile(path, fileName);
-        writeBytesToFile(bytes, targetFileName);
+        deleteFile(sourcePath, sourceFileName);
+        writeBytesToFile(bytes, targetPath, sourceFileName);
     }
 
     public static void deleteFile(String path, String fileName){
-
+        File file = new File(path + SEP + fileName);
+        file.delete();
     }
 
-    public static <T> void writeListToFile(Collection<T> collection, String fileName, boolean append) {
+    public static <T> void writeCollectionToFile(Collection<T> collection, String path, String fileName, boolean append) {
         if (!append) {
-            writeTextToFile("", fileName, false);
+            writeTextToFile("", path, fileName, false);
         }
         for (T each : collection) {
-            FileService.writeTextToFile(each.toString() + "\n", fileName, true);
+            FileService.writeTextToFile(each.toString() + "\n", path, fileName, true);
         }
     }
 

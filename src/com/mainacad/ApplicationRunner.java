@@ -13,7 +13,8 @@ public class ApplicationRunner {
 
     public static void main(String[] args) {
         List<UserConnection> userConnections = createTestListConnection();
-        FileService.writeListToFile(userConnections, "file1.txt", false);
+        FileService.writeCollectionToFile(userConnections, FileService.FILES_DIR, "file1.txt", false);
+        FileService.moveFile(FileService.FILES_DIR, "file1.txt", FileService.FILES_DIR + FileService.SEP + "movefile");
     }
 
     public static List<UserConnection> createTestListConnection() {

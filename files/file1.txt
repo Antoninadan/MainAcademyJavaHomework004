@@ -1,5 +1,0 @@
-sessionId: 60808  connection time: Fri Oct 25 15:20:03 EEST 2019  userIP: 254.248.248.176
-sessionId: 52032  connection time: Fri Oct 25 15:20:03 EEST 2019  userIP: 141.142.235.101
-sessionId: 33512  connection time: Fri Oct 25 15:20:03 EEST 2019  userIP: 180.176.111.161
-sessionId: 44040  connection time: Fri Oct 25 15:20:03 EEST 2019  userIP: 130.206.236.201
-sessionId: 41933  connection time: Fri Oct 25 15:20:03 EEST 2019  userIP: 145.118.161.181
