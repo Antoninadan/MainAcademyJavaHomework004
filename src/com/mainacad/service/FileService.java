@@ -76,8 +76,8 @@ public class FileService {
 
     public static void moveFile(String sourcePath, String sourceFileName, String targetPath) {
         byte[] bytes = getBytesFromFile(sourcePath, sourceFileName);
-        deleteFile(sourcePath, sourceFileName);
         writeBytesToFile(bytes, targetPath, sourceFileName);
+        deleteFile(sourcePath, sourceFileName);
     }
 
     public static void deleteFile(String path, String fileName){
