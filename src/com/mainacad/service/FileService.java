@@ -108,7 +108,7 @@ public class FileService {
         }
     }
 
-    public static List<UserConnection> readUserConnectionFromFile(String path, String fileName) {
+    public static List<UserConnection> readUserConnectionsFromFile(String path, String fileName) {
         List<UserConnection> userConnections = new ArrayList<>();
         try (FileReader fileReader = new FileReader(path + SEP + fileName);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
