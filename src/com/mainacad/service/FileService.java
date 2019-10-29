@@ -1,7 +1,10 @@
 package com.mainacad.service;
 
+import com.mainacad.model.UserConnection;
+
 import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -59,6 +62,17 @@ public class FileService {
         }
     }
 
+    public static void writeObjectToFile(Object object, String path, String fileName) {
+        checkTargetDir(path);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(path + SEP + fileName);
+             ObjectOutputStream objectInputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectInputStream.writeObject(object);
+            objectInputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static byte[] getBytesFromFile(String path, String fileName) {
         File file = new File(path + SEP + fileName);
         try {
@@ -80,7 +94,7 @@ public class FileService {
         deleteFile(sourcePath, sourceFileName);
     }
 
-    public static void deleteFile(String path, String fileName){
+    public static void deleteFile(String path, String fileName) {
         File file = new File(path + SEP + fileName);
         file.delete();
     }
@@ -92,6 +106,38 @@ public class FileService {
         for (T each : collection) {
             FileService.writeTextToFile(each.toString() + "\n", path, fileName, true);
         }
+    }
+
+    public static List<UserConnection> readUserConnectionFromFile(String path, String fileName) {
+        List<UserConnection> userConnections = new ArrayList<>();
+        try (FileReader fileReader = new FileReader(path + SEP + fileName);
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                UserConnection userConnection = new UserConnection();
+                String words[] = line.split(" ");
+                userConnection.setSessionId(Integer.valueOf(words[0]));
+                userConnection.setConnectionTime(Long.valueOf(words[1]));
+                userConnection.setUserIP(words[2]);
+                userConnections.add(userConnection);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return userConnections;
+    }
+
+    public static Object readObjectFromFile(String path, String fileName) {
+        Object object = new Object();
+        try (FileInputStream fileInputStream = new FileInputStream(path + SEP + fileName);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            object = objectInputStream.readObject();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (ClassNotFoundException e1) {
+            e1.printStackTrace();
+        }
+        return object;
     }
 
 }

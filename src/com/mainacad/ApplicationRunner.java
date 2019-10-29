@@ -1,10 +1,10 @@
 package com.mainacad;
 
+import com.mainacad.helper.UserConnectionHelper;
 import com.mainacad.model.UserConnection;
 import com.mainacad.service.FileService;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -12,38 +12,14 @@ public class ApplicationRunner {
     public static final Logger LOGGER = Logger.getLogger(ApplicationRunner.class.getName());
 
     public static void main(String[] args) {
-        List<UserConnection> userConnections = createTestListConnection();
-        FileService.writeCollectionToFile(userConnections, FileService.FILES_DIR, "file1.txt", false);
-        FileService.moveFile(FileService.FILES_DIR, "file1.txt", FileService.FILES_DIR + FileService.SEP + "movefile");
-    }
-
-    public static List<UserConnection> createTestListConnection() {
         List<UserConnection> userConnections = new ArrayList<>();
-        Date date = new Date();
-        for (int i = 1; i <= 5; i++) {
-            userConnections.add(new UserConnection(getRandomIP(), getRandomSessionId(), date.getTime()));
+        for (int i = 0; i < 5; i++) {
+            UserConnection userConnection = UserConnectionHelper.getRandomUserConnection();
+            userConnections.add(userConnection);
         }
-        return userConnections;
+        FileService.writeCollectionToFile(userConnections, FileService.FILES_DIR, "file1.txt", false);
+        FileService.writeObjectToFile(userConnections.get(0), FileService.FILES_DIR, "file_obj.txt");
+        LOGGER.info(((UserConnection)(FileService.readObjectFromFile(FileService.FILES_DIR, "file_obj.txt"))).toString());
+
     }
-
-    public static String getRandomIP() {
-        String result = "";
-        int rangeFrom = 100;
-        int rangeTo = 155;
-        for (int i = 1; i <= 4; i++) {
-            result += Integer.toString(rangeFrom + (int) (Math.random() * rangeTo));
-            if (i != 4) {
-                result += ".";
-            }
-        }
-        return result;
-    }
-
-    public static String getRandomSessionId() {
-        int rangeFrom = 10000;
-        int rangeTo = 89999;
-        return Integer.toString(rangeFrom + (int) (Math.random() * rangeTo));
-    }
-
-
 }
