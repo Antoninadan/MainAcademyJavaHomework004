@@ -14,12 +14,12 @@ public class FileService {
     public static final String FILES_DIR = MAIN_DIR + SEP + "files";
 
     // work with text
-    public static void writeTextToFile(String text, String path, String fileName, boolean append) {
+    public static synchronized void writeTextToFile(String text, String path, String fileName, boolean append) {
         checkTargetDir(path);
         try (FileWriter fileWriter = new FileWriter(path + SEP + fileName, append)) {
             if (append) {
                 BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
-                bufferWriter.write(text);
+                bufferWriter.write(text+ "\n");
                 bufferWriter.close();
             } else {
                 fileWriter.write(text);
@@ -104,7 +104,7 @@ public class FileService {
             writeTextToFile("", path, fileName, false);
         }
         for (T each : collection) {
-            FileService.writeTextToFile(each.toString() + "\n", path, fileName, true);
+            FileService.writeTextToFile(each.toString(), path, fileName, true);
         }
     }
 
