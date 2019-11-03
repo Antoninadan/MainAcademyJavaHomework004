@@ -31,5 +31,6 @@ public class ApplicationRunner {
             threads.add(multithreadWrapper);
             multithreadWrapper.start();
         }
+        semaphore.release();
     }
 }
